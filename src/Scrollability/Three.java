@@ -1,10 +1,10 @@
-package one;
+package Scrollability;
 
 
 import java.sql.*;
 
 /*from  w  w  w.  j  a va2  s.  c  om*/
-public class DbSelect {
+public class Three {
 
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/sakila";
@@ -17,21 +17,22 @@ public class DbSelect {
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();// becomes local variable to try block
-            String sql = "SELECT first_name, last_name from actor where actor_id= 4";
+            stmt = conn.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY );
+            String sql = "SELECT first_name from actor limit 10 ";
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                //       int id = rs.getInt("id");
-                //     int age = rs.getInt("age");
-                String first = rs.getString("first_name");
-                String last = rs.getString("last_name");
+            rs.setFetchSize(5);
+            while (rs.next()) {
 
-                // System.out.print("ID: " + id);
-                //System.out.print(", Age: " + age);
-                System.out.println(", First: " + first);
-                System.out.println(", Last: " + last);
-            } else {
-                System.out.println("no record found");
+                String first = rs.getString("first_name");
+                System.out.println("Name  :" +first );
+            }
+            System.out.println("\n\n");
+            System.out.println("After Previous \n\n");
+            //Works!!
+            while (rs.previous()) {
+
+                String first = rs.getString("first_name");
+                System.out.println("Name: " +first );
             }
 
             rs.close();

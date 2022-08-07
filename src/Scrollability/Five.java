@@ -1,13 +1,16 @@
-package one;
+package Scrollability;
 
 
 import java.sql.*;
+/*rs.absolute(row)==directly access a row
+rs.refreshRow()==== for updating any changes in database
+        while java application is still running
+Error: ResultSet Not updatable*/
 
-/*from  w  w  w.  j  a va2  s.  c  om*/
-public class DbSelect {
+public class Five {
 
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/sakila";
+    static final String DB_URL = "jdbc:mysql://localhost/db2";
     static final String USER = "root";
     static final String PASS = "grahmbell";
 
@@ -17,21 +20,22 @@ public class DbSelect {
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();// becomes local variable to try block
-            String sql = "SELECT first_name, last_name from actor where actor_id= 4";
+            stmt = conn.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY );
+            String sql = "SELECT  name from student ";
             ResultSet rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                //       int id = rs.getInt("id");
-                //     int age = rs.getInt("age");
-                String first = rs.getString("first_name");
-                String last = rs.getString("last_name");
+               stmt.setFetchSize(1);
+            while (rs.next()) {
 
-                // System.out.print("ID: " + id);
-                //System.out.print(", Age: " + age);
-                System.out.println(", First: " + first);
-                System.out.println(", Last: " + last);
-            } else {
-                System.out.println("no record found");
+                String first = rs.getString("name");
+                System.out.println("Name  :" +first );
+            }
+            System.in.read();
+            System.out.println("\n\n");
+            System.out.println("After Previous \n\n");
+            while (rs.previous()) {
+//                rs.refreshRow();
+                String first = rs.getString("name");
+                System.out.println("Name: " +first );
             }
 
             rs.close();

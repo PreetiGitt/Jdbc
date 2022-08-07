@@ -1,15 +1,10 @@
-package two;
+package procedure;
 
+import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-/*from  w  w  w.  j  a va2  s.  c  om*/
-public class DbUdate {
+public class StoredProcedure {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/db2";
+    static final String DB_URL = "jdbc:mysql://localhost/sakila";
     static final String USER = "root";
     static final String PASS = "grahmbell";
 
@@ -20,13 +15,23 @@ public class DbUdate {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();// becomes local variable to try block
-            String sql = "insert into employee values (1, 'ABC', 20000, 'Finance', 'Mumbai'  )";
-         //  ResultSet rs = stmt.executeQuery(sql);
-            int rowsAffected= stmt.executeUpdate(sql);//Best Practice
-            if(rowsAffected>0)
-                System.out.println("success");
-            else
-                System.out.println("update not available/failed");
+            String sql = "SELECT first_name, last_name from actor where actor_id= 4";
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                //       int id = rs.getInt("id");
+                //     int age = rs.getInt("age");
+                String first = rs.getString("first_name");
+                String last = rs.getString("last_name");
+
+                // System.out.print("ID: " + id);
+                //System.out.print(", Age: " + age);
+                System.out.println(", First: " + first);
+                System.out.println(", Last: " + last);
+            } else {
+                System.out.println("no record found");
+            }
+
+            rs.close();
             stmt.close();
             conn.close();
         }
@@ -45,4 +50,5 @@ public class DbUdate {
             }
         }
     }
+
 }

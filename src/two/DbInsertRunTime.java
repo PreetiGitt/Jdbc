@@ -17,23 +17,22 @@ public class DbInsertRunTime {
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
-        Scanner sc= new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         System.out.println("Enter the name of student");
-         String name= sc.nextLine();
+        String name = sc.nextLine();
         System.out.println("Enter the roll number of student");
-        int roll= sc.nextInt();
+        int roll = sc.nextInt();
         System.out.println("Enter the subject of student");
-        String sub= sc.nextLine();
+        String sub = sc.nextLine();
 
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();// becomes local variable to try block
-            String sql = String.format("insert into Student values ('%s', %d,'%s'  )",name, roll,sub);
+            String sql = String.format("insert into Student values ('%s', %d,'%s'  )", name, roll, sub);
             stmt.close();
             conn.close();
-        }
-        catch (SQLException se) {
+        } catch (SQLException se) {
             se.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,7 +18,7 @@ public class CallerClass {
             preparedStatement = conn.prepareStatement(sql);
 
             preparedStatement.setString(1, "Nitya");
-            preparedStatement.setInt(2, 10);
+            preparedStatement.setInt(2, 15);
 
             preparedStatement.setString(3, "Revenue");
             preparedStatement.setDate(4, Date.valueOf("2022-04-28"));//---->> adding date as attribute
